@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aaron — Built with AI</title>
+  <meta name="description" content="A portfolio of real software shipped with AI: Privaj, Claim Forge, Inbox Pilot, Cass's Auto CMA, and more." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <meta property="og:title" content="Aaron — Built with AI" />
+  <meta property="og:description" content="Real software, shipped with AI." />
+  <meta name="theme-color" content="#07080c" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Grain + ambient glow layers -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__blob ambient__blob--a"></div>
+    <div class="ambient__blob ambient__blob--b"></div>
+  </div>
+
+  <!-- Custom cursor (desktop only, injected states via JS) -->
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__dot"></div>
+    <div class="cursor__ring"></div>
+  </div>
+
+  <!-- Left spine: scroll progress + project nodes (built by JS) -->
+  <nav class="spine" aria-label="Project navigation">
+    <div class="spine__track"><div class="spine__fill"></div></div>
+    <ol class="spine__nodes" id="spineNodes"></ol>
+  </nav>
+
+  <!-- Top nav -->
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#top" data-cursor="link" aria-label="Back to top">
+      <svg class="nav__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="6.5" fill="var(--bg)" stroke="currentColor" stroke-width="3.2"/>
+      </svg>
+      <span class="nav__name">aaron<span class="nav__dot">.</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#work" data-cursor="link">Work</a>
+      <a href="#process" data-cursor="link">Process</a>
+      <a href="#contact" data-cursor="link">Contact</a>
+    </nav>
+    <a class="nav__status" href="#contact" data-cursor="link">
+      <span class="nav__pulse" aria-hidden="true"></span>
+      Open to new builds
+    </a>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <canvas class="hero__canvas" id="constellation" aria-hidden="true"></canvas>
+
+      <div class="hero__inner">
+        <p class="hero__kicker" data-reveal>
+          <span class="kicker-line" aria-hidden="true"></span>
+          Human direction &times; machine speed
+        </p>
+
+        <h1 class="hero__title" id="heroTitle">
+          <span class="hero__line">I build real</span>
+          <span class="hero__line">software <em class="hero__em">with AI</em></span>
+        </h1>
+
+        <p class="hero__sub" data-reveal>
+          Four real products and counting — on-premise AI platforms, patent drafting,
+          email automation, real-estate analysis. Designed by a human. Accelerated by machines.
+        </p>
+
+        <div class="hero__cta" data-reveal>
+          <a class="btn btn--primary" href="#work" data-cursor="link" data-magnetic>
+            <span>See the builds</span>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#contact" data-cursor="link" data-magnetic>
+            <span>Work with me</span>
+          </a>
+        </div>
+      </div>
+
+      <a class="hero__scrollcue" href="#work" data-cursor="link" aria-label="Scroll to work">
+        <span class="hero__scrolltext">scroll</span>
+        <span class="hero__scrollline" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track" id="marqueeTrack"></div>
+    </div>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto" id="manifesto">
+      <p class="manifesto__text" id="manifestoText">
+        AI doesn&rsquo;t replace the builder. It removes everything between the idea and the product.
+        These are tools people actually use &mdash; imagined, directed, and shipped by one person with a stack of models.
+      </p>
+      <div class="stats" id="stats">
+        <div class="stat" data-reveal>
+          <span class="stat__num" data-count="4" data-suffix="">0</span>
+          <span class="stat__label">Products shipped</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__num" data-count="1" data-suffix="">0</span>
+          <span class="stat__label">Person building</span>
+        </div>
+        <div class="stat" data-reveal>
+          <span class="stat__num stat__num--inf" data-inf>&infin;</span>
+          <span class="stat__label">Prompts along the way</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WORK ============ -->
+    <section class="work" id="work">
+      <header class="section-head">
+        <span class="section-head__index mono">01</span>
+        <h2 class="section-head__title split-title">The Builds</h2>
+        <p class="section-head__sub" data-reveal>Real tools with real users — each one designed, built, and shipped with AI in the loop.</p>
+      </header>
+
+      <!-- Project chapters rendered from js/data.js -->
+      <div id="chapters"></div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="process" id="process">
+      <header class="section-head">
+        <span class="section-head__index mono">02</span>
+        <h2 class="section-head__title split-title">How it gets made</h2>
+        <p class="section-head__sub" data-reveal>The loop is simple. Running it relentlessly is the craft.</p>
+      </header>
+
+      <ol class="process__steps">
+        <li class="pstep" data-reveal style="--i:0">
+          <span class="pstep__num mono">01</span>
+          <h3 class="pstep__title">Frame</h3>
+          <p class="pstep__text">Find the real problem — usually something a person does by hand every week and quietly hates.</p>
+        </li>
+        <li class="pstep" data-reveal style="--i:1">
+          <span class="pstep__num mono">02</span>
+          <h3 class="pstep__title">Prototype</h3>
+          <p class="pstep__text">Work with AI to get a rough, working version in front of a real user within days, not months.</p>
+        </li>
+        <li class="pstep" data-reveal style="--i:2">
+          <span class="pstep__num mono">03</span>
+          <h3 class="pstep__title">Pressure-test</h3>
+          <p class="pstep__text">Real usage breaks things. Feed every failure back into the loop until it stops breaking.</p>
+        </li>
+        <li class="pstep" data-reveal style="--i:3">
+          <span class="pstep__num mono">04</span>
+          <h3 class="pstep__title">Ship &amp; repeat</h3>
+          <p class="pstep__text">Put it in production, watch it run, and move to the next idea with everything learned.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact" id="contact">
+      <p class="contact__kicker" data-reveal>Have a workflow that deserves software?</p>
+      <h2 class="contact__title split-title">Let&rsquo;s build it.</h2>
+      <a class="btn btn--primary btn--big" id="contactBtn" href="#" data-cursor="link" data-magnetic>
+        <span id="contactEmail">Get in touch</span>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <span class="footer__left mono">&copy; <span id="year"></span> — designed by a human, accelerated by machines</span>
+    <a class="footer__top" href="#top" data-cursor="link">Back to top &uarr;</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
