@@ -9,7 +9,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
-  const DEFAULT_ACCENT = "#a78bfa";
+  const DEFAULT_ACCENT = "#f0b429";
 
   /* ---------- helpers ---------- */
 
@@ -107,6 +107,38 @@
         </div>
       </div>`,
 
+    dashy: () => `
+      <div class="mock mock--dashy">
+        <div class="brief">
+          <span class="brief__label mono">Today</span>
+          <span class="skl skl--strong" style="width:88%"></span>
+          <span class="skl skl--lt" style="width:66%"></span>
+          <span class="dpower mono"><span class="dpower__dot"></span>live</span>
+        </div>
+        <div class="dgrid">
+          <div class="dcard">
+            <span class="dcard__top"><span class="dcard__dot"></span><span class="skl" style="width:40%"></span><span class="chip mono">AI</span></span>
+            <span class="skl skl--lt" style="width:82%"></span>
+            <span class="skl skl--lt" style="width:58%"></span>
+          </div>
+          <div class="dcard">
+            <span class="dcard__top"><span class="dcard__dot"></span><span class="skl" style="width:52%"></span><span class="chip mono">AI</span></span>
+            <span class="skl skl--lt" style="width:70%"></span>
+            <span class="skl skl--lt" style="width:64%"></span>
+          </div>
+          <div class="dcard">
+            <span class="dcard__top"><span class="dcard__dot"></span><span class="skl" style="width:46%"></span><span class="chip mono">AI</span></span>
+            <span class="skl skl--lt" style="width:76%"></span>
+            <span class="skl skl--lt" style="width:50%"></span>
+          </div>
+          <div class="dcard dcard--connect">
+            <span class="dcard__plus">+</span>
+            <span class="skl skl--lt" style="width:54%"></span>
+          </div>
+        </div>
+        <div class="mock__hint mono">local model &middot; refreshed 2m ago</div>
+      </div>`,
+
     cma: () => `
       <div class="mock mock--cma">
         <div class="cmd mono"><span class="cmd__slash">/cma</span>&nbsp;123 Main St<span class="caret"></span></div>
@@ -200,18 +232,6 @@
         </div>
       </article>`;
     }).join("");
-  }
-
-  /* ---------- marquee ---------- */
-
-  function buildMarquee() {
-    const track = $("#marqueeTrack");
-    if (!track) return;
-    const items = SITE.marquee
-      .map((w) => `<span class="marquee__item">${w}</span><span class="marquee__star">&#10022;</span>`)
-      .join("");
-    // two identical halves -> seamless 50% translate loop
-    track.innerHTML = `<div class="marquee__half">${items}</div><div class="marquee__half" aria-hidden="true">${items}</div>`;
   }
 
   /* ---------- spine nav ---------- */
@@ -409,22 +429,11 @@
     }
     document.documentElement.classList.add("has-cursor");
     const dot = $(".cursor__dot", cursor);
-    const ring = $(".cursor__ring", cursor);
-    let mx = -100, my = -100, rx = -100, ry = -100;
-    let raf;
 
     window.addEventListener("pointermove", (e) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
-      if (!raf) loop();
+      dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      cursor.classList.add("cursor--on");
     }, { passive: true });
-
-    function loop() {
-      rx += (mx - rx) * 0.16;
-      ry += (my - ry) * 0.16;
-      ring.style.transform = `translate(${rx}px, ${ry}px)`;
-      raf = requestAnimationFrame(loop);
-    }
 
     document.addEventListener("pointerover", (e) => {
       if (e.target.closest("[data-cursor]")) cursor.classList.add("cursor--hover");
@@ -434,6 +443,7 @@
     });
     document.addEventListener("pointerdown", () => cursor.classList.add("cursor--down"));
     document.addEventListener("pointerup", () => cursor.classList.remove("cursor--down"));
+    window.addEventListener("blur", () => cursor.classList.remove("cursor--on"));
   }
 
   /* ---------- magnetic buttons ---------- */
@@ -532,7 +542,7 @@
           const d2 = dx * dx + dy * dy;
           if (d2 < LINK_DIST * LINK_DIST) {
             const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.34;
-            ctx.strokeStyle = `rgba(167, 139, 250, ${alpha})`;
+            ctx.strokeStyle = `rgba(240, 180, 41, ${alpha})`;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -560,7 +570,7 @@
         if (p.x < -20) p.x = W + 20; if (p.x > W + 20) p.x = -20;
         if (p.y < -20) p.y = H + 20; if (p.y > H + 20) p.y = -20;
 
-        ctx.fillStyle = "rgba(226, 229, 240, 0.75)";
+        ctx.fillStyle = "rgba(236, 230, 219, 0.72)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -571,7 +581,7 @@
       for (const pl of pulses) {
         pl.r += 1.4;
         pl.a *= 0.955;
-        ctx.strokeStyle = `rgba(167, 139, 250, ${pl.a})`;
+        ctx.strokeStyle = `rgba(240, 180, 41, ${pl.a})`;
         ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(pl.x, pl.y, pl.r, 0, Math.PI * 2);
@@ -627,6 +637,21 @@
       btn.href = `mailto:${SITE.email}`;
       if (label) label.textContent = SITE.email;
     }
+    const phone = $("#contactPhone");
+    const phoneText = $("#contactPhoneText");
+    if (phone && SITE.phone) {
+      phone.href = `tel:${SITE.phoneHref || SITE.phone.replace(/\s+/g, "")}`;
+      if (phoneText) phoneText.textContent = SITE.phone;
+    }
+    // any element tagged data-email / data-phone (used on the About page)
+    $$("[data-email]").forEach((el) => {
+      el.href = `mailto:${SITE.email}`;
+      if (el.dataset.email === "text") el.textContent = SITE.email;
+    });
+    $$("[data-phone]").forEach((el) => {
+      el.href = `tel:${SITE.phoneHref || SITE.phone.replace(/\s+/g, "")}`;
+      if (el.dataset.phone === "text") el.textContent = SITE.phone;
+    });
     const year = $("#year");
     if (year) year.textContent = new Date().getFullYear();
   }
@@ -634,7 +659,6 @@
   /* ---------- boot ---------- */
 
   renderChapters();
-  buildMarquee();
   buildSpine();
   initProgress();
   initReveals();

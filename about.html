@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Aaron Vajda</title>
+  <meta name="description" content="Aaron Vajda — builder, problem solver, and soon-to-be Northern Arizona University graduate who ships real software with AI." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <meta name="theme-color" content="#0a0908" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__blob ambient__blob--a"></div>
+    <div class="ambient__blob ambient__blob--b"></div>
+  </div>
+
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor__dot"></div>
+  </div>
+
+  <header class="nav nav--scrolled" id="nav">
+    <a class="nav__brand" href="index.html#top" data-cursor="link" aria-label="Home">
+      <svg class="nav__mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 6v36M6 24h36M11 11l26 26M37 11L11 37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="6.5" fill="var(--bg)" stroke="currentColor" stroke-width="3.2"/>
+      </svg>
+      <span class="nav__name">aaron<span class="nav__dot">.</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="index.html#work" data-cursor="link">Work</a>
+      <a href="index.html#process" data-cursor="link">Process</a>
+      <a href="about.html" data-cursor="link" aria-current="page">About</a>
+      <a href="index.html#contact" data-cursor="link">Contact</a>
+    </nav>
+    <a class="nav__status" href="index.html#contact" data-cursor="link">
+      <span class="nav__pulse" aria-hidden="true"></span>
+      Open to new builds
+    </a>
+  </header>
+
+  <main class="about" id="top">
+    <section class="aboutwrap">
+      <p class="about__kicker" data-reveal>About me</p>
+      <h1 class="about__name split-title">Aaron Vajda</h1>
+      <p class="about__role" data-reveal>Builder &middot; problem solver &middot; soon-to-be NAU graduate</p>
+
+      <div class="about__grid">
+        <div class="about__bio">
+          <p class="about__lead" data-reveal>
+            I&rsquo;m Aaron Vajda &mdash; a builder who turns everyday problems into working software.
+            I&rsquo;m about to graduate from <strong>Northern Arizona University</strong> with a degree in
+            <strong>Business Management</strong>, hopefully with honors, and I&rsquo;ve spent that time proving
+            something to myself: that one motivated person with the right tools can ship real products people
+            actually use. Everything on this site &mdash; an on-premise AI platform for local businesses, a
+            voice-first patent drafter, an email sorter, a realtor&rsquo;s analysis bot, and my own local-first
+            dashboard &mdash; I designed and built end to end, with AI in the loop the whole way. I&rsquo;m a
+            <strong>hard-working problem solver</strong> who&rsquo;s at my best in the gap between &ldquo;this is
+            annoying&rdquo; and &ldquo;this is handled.&rdquo; I care about privacy and about tools that respect
+            the people using them, and I don&rsquo;t leave things half-finished. If you&rsquo;ve got a workflow
+            that deserves software, I&rsquo;d love to build it.
+          </p>
+
+          <div class="about__traits" data-reveal>
+            <span class="tag">Ships end-to-end</span>
+            <span class="tag">Self-directed</span>
+            <span class="tag">Privacy-first</span>
+            <span class="tag">AI-native workflow</span>
+            <span class="tag">Business + engineering</span>
+            <span class="tag">Finishes what I start</span>
+          </div>
+
+          <div class="about__cta" data-reveal>
+            <a class="btn btn--primary" href="index.html#work" data-cursor="link" data-magnetic>
+              <span>See the builds</span>
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn--ghost" data-email data-cursor="link" data-magnetic href="#">
+              <span>Email me</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="about__card" data-reveal>
+          <div class="about__portrait">
+            <!-- Swap this monogram for a photo any time:
+                 <img src="assets/aaron.jpg" alt="Aaron Vajda" /> -->
+            <span class="about__monogram">AV</span>
+          </div>
+
+          <dl class="facts">
+            <div class="facts__row">
+              <dt>Education</dt>
+              <dd>B.S. Business Management<br />Northern Arizona University &middot; honors track</dd>
+            </div>
+            <div class="facts__row">
+              <dt>Status</dt>
+              <dd>Graduating soon &middot; open to new builds</dd>
+            </div>
+            <div class="facts__row">
+              <dt>Focus</dt>
+              <dd>AI products, privacy-first tools, automation</dd>
+            </div>
+          </dl>
+
+          <div class="about__contactcard">
+            <a data-email="text" href="#" data-cursor="link">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="m2 4 6 4.5L14 4" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              <span>email</span>
+            </a>
+            <a data-phone="text" href="#" data-cursor="link">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 2.5 6.6 5 5.3 6.4a8 8 0 0 0 4.3 4.3L11 9.4l2.5 1.4c.3.2.4.5.3.8-.5 1.6-2 2.6-3.6 2.3A11 11 0 0 1 1.1 4.8C.8 3.2 1.8 1.7 3.4 1.2c.3-.1.6 0 .8.3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              <span>phone</span>
+            </a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="footer__left mono">&copy; <span id="year"></span> Aaron Vajda — designed by a human, accelerated by machines</span>
+    <a class="footer__top" href="index.html#top" data-cursor="link">Home &uarr;</a>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -5,10 +5,10 @@
    ========================================================= */
 
 const SITE = {
-  name: "Aaron",
-  email: "atraintothemax@gmail.com",
-  // Words that scroll in the marquee between hero and work:
-  marquee: ["Privaj", "Claim Forge", "InboxPilot", "Cass's Auto CMA"],
+  name: "Aaron Vajda",
+  email: "aaron.vajda@gmail.com",
+  phone: "205 914 6852",
+  phoneHref: "+12059146852",
 };
 
 /* ---------------------------------------------------------
@@ -56,7 +56,7 @@ const LOGOS = {
      accent    the chapter's color (page tints to this on scroll)
      brand     optional real logo: { src, bg: 'light'|'dark'|'none' }
      logo      fallback: key into LOGOS, or inline "<svg …>" string
-     mock      'privaj' | 'claimforge' | 'inboxpilot' | 'cma' | 'generic'
+     mock      'privaj' | 'dashy' | 'claimforge' | 'inboxpilot' | 'cma' | 'generic'
      image     optional: path to a screenshot — replaces the mock
      link      optional: public URL. Omit/null → "Private build" badge
      status    small status pill text
@@ -77,11 +77,31 @@ const PROJECTS = [
       "Encrypted at rest, isolated per client",
     ],
     tags: ["AI Agents", "On-Premise", "Local LLMs", "Privacy"],
-    accent: "#6494ff",
+    accent: "#8b7cff",
     brand: { src: "assets/brand/privaj-icon.svg", bg: "none" },
     mock: "privaj",
     link: null,
     status: "In production",
+  },
+  {
+    id: "dashy",
+    name: "Dashy",
+    domain: "Local-first personal dashboard",
+    headline: "Mission control that runs on your own machine.",
+    description:
+      "Dashy is a self-refreshing dashboard that pulls in your GitHub, inbox, calendar, and the AI news you actually care about — then writes a one-line summary of each with an open-source model running locally, so there are no API bills and nothing leaves your machine. It installs to your phone as an app, boots or shuts down remotely, and every data source is a swappable plugin.",
+    features: [
+      "Summaries from local models — zero cloud keys",
+      "Every data source is a plugin",
+      "Installs to your phone as a PWA",
+      "Boot or kill it remotely from your phone",
+    ],
+    tags: ["Local LLMs", "Next.js 16", "Dashboard", "PWA"],
+    accent: "#4c9bff",
+    brand: { src: "assets/brand/dashy-icon.png", bg: "none" },
+    mock: "dashy",
+    link: null,
+    status: "In daily use",
   },
   {
     id: "claim-forge",
@@ -97,7 +117,7 @@ const PROJECTS = [
       "Attorney-ready DOCX and PDF export",
     ],
     tags: ["AI Agents", "Patents", "Local-First", "Voice"],
-    accent: "#fb923c",
+    accent: "#fb7a3c",
     brand: { src: "assets/brand/claim-forge.png", bg: "light" },
     mock: "claimforge",
     link: null,
@@ -117,7 +137,7 @@ const PROJECTS = [
       "Custom rules, quiet hours, AI summaries",
     ],
     tags: ["AI Email", "Gmail", "Productivity", "SaaS"],
-    accent: "#38bdf8",
+    accent: "#22c7e6",
     logo: "inboxpilot",
     mock: "inboxpilot",
     link: "https://inboxpilot-lyart.vercel.app",
