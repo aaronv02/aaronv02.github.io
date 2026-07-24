@@ -7,8 +7,6 @@
 const SITE = {
   name: "Aaron Vajda",
   email: "aaron.vajda@gmail.com",
-  phone: "205 914 6852",
-  phoneHref: "+12059146852",
 };
 
 /* ---------------------------------------------------------

@@ -637,20 +637,10 @@
       btn.href = `mailto:${SITE.email}`;
       if (label) label.textContent = SITE.email;
     }
-    const phone = $("#contactPhone");
-    const phoneText = $("#contactPhoneText");
-    if (phone && SITE.phone) {
-      phone.href = `tel:${SITE.phoneHref || SITE.phone.replace(/\s+/g, "")}`;
-      if (phoneText) phoneText.textContent = SITE.phone;
-    }
-    // any element tagged data-email / data-phone (used on the About page)
+    // any element tagged data-email (used on the About page)
     $$("[data-email]").forEach((el) => {
       el.href = `mailto:${SITE.email}`;
       if (el.dataset.email === "text") el.textContent = SITE.email;
-    });
-    $$("[data-phone]").forEach((el) => {
-      el.href = `tel:${SITE.phoneHref || SITE.phone.replace(/\s+/g, "")}`;
-      if (el.dataset.phone === "text") el.textContent = SITE.phone;
     });
     const year = $("#year");
     if (year) year.textContent = new Date().getFullYear();
