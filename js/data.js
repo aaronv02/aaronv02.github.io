@@ -142,8 +142,8 @@ const PROJECTS = [
     status: "Live",
   },
   {
-    id: "cass-auto-cma",
-    name: "Cass's Auto CMA",
+    id: "auto-cma",
+    name: "Auto CMA Builder for IRES",
     domain: "Real-estate analysis bot",
     headline: "A full market analysis from one slash command.",
     description:
