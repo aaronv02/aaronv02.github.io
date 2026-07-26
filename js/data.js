@@ -118,7 +118,7 @@ const PROJECTS = [
     accent: "#fb7a3c",
     brand: { src: "assets/brand/claim-forge.png", bg: "light" },
     mock: "claimforge",
-    link: null,
+    link: "/claim-forge/",
     status: "In development",
   },
   {
