@@ -78,7 +78,7 @@ const PROJECTS = [
     accent: "#8b7cff",
     brand: { src: "assets/brand/privaj-icon.svg", bg: "none" },
     mock: "privaj",
-    link: null,
+    link: "/privaj/",
     status: "In production",
   },
   {
