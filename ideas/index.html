@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aaron's Ideas — Private Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;--surface:#111111;--surface2:#181818;--border:#242424;
+  --gold:#c8a020;--gold-dim:#7a5e0a;--text:#e8e4d8;--muted:#6b6760;
+  --accent:#1a3a5c;--green:#1a4a1a;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* ── LOCK ── */
+#lock{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.lock-logo{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:4px;color:var(--gold);line-height:1}
+.lock-sub{font-size:11px;letter-spacing:6px;color:var(--muted);text-transform:uppercase;margin-top:-12px}
+.lock-form{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px}
+.lock-input{background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:14px;padding:12px 20px;width:260px;letter-spacing:4px;text-align:center;outline:none;transition:border-color .2s}
+.lock-input:focus{border-color:var(--gold)}
+.lock-btn{background:var(--gold);color:#0a0a0a;border:none;font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:10px 32px;cursor:pointer;transition:opacity .2s}
+.lock-btn:hover{opacity:.85}
+.lock-err{font-size:11px;color:#c04040;letter-spacing:2px;text-transform:uppercase;height:16px}
+
+/* ── APP ── */
+#app{display:none;flex-direction:column;min-height:100vh}
+
+/* ── HEADER ── */
+header{border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:stretch;justify-content:space-between;position:sticky;top:0;background:var(--bg);z-index:100;height:56px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;color:var(--gold);cursor:pointer;display:flex;align-items:center}
+.nav{display:flex;align-items:stretch;gap:0}
+.nav-tab{padding:0 20px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;transition:color .2s;border-bottom:2px solid transparent;display:flex;align-items:center;gap:6px}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.header-right{display:flex;align-items:center;gap:18px}
+.back-link{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .2s}
+.back-link:hover{color:var(--gold)}
+.lock-icon{cursor:pointer;color:var(--muted);font-size:18px;transition:color .2s}
+.lock-icon:hover{color:var(--text)}
+
+main{flex:1;padding:48px 40px;max-width:1100px;margin:0 auto;width:100%}
+
+/* ── PAGE FADE ── */
+.page{animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME CARDS ── */
+.home-header{margin-bottom:40px}
+.home-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--text);line-height:1}
+.home-sub{color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+.idea-card{background:var(--surface);border:1px solid var(--border);padding:32px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.idea-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.idea-card:hover{background:var(--surface2);border-color:#333}
+.idea-card:hover::before{transform:scaleX(1)}
+.card-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-family:'DM Mono',monospace}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:2px;line-height:1;margin-bottom:4px}
+.card-product{font-size:13px;color:var(--muted);margin-bottom:16px}
+.card-desc{font-size:13px;color:#a09890;line-height:1.6;margin-bottom:24px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-status{font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border:1px solid;color:var(--gold);border-color:var(--gold-dim)}
+.card-arrow{color:var(--muted);font-size:20px;transition:transform .2s}
+.idea-card:hover .card-arrow{transform:translateX(4px);color:var(--gold)}
+.card-num{position:absolute;top:20px;right:24px;font-family:'Bebas Neue',sans-serif;font-size:68px;color:var(--border);line-height:1;pointer-events:none}
+
+/* ── IDEA DETAIL ── */
+.back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .2s;margin-bottom:40px;background:none;border:none;font-family:'DM Sans',sans-serif}
+.back-btn:hover{color:var(--gold)}
+.detail-header{margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.detail-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-family:'DM Mono',monospace}
+.detail-title{font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:3px;line-height:1;margin-bottom:6px}
+.detail-product{font-size:15px;color:var(--muted);margin-bottom:20px}
+.detail-tagline{font-size:15px;color:#c0b8a8;font-style:italic;line-height:1.6;max-width:680px}
+.sub-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:40px}
+.sub-tab{padding:12px 28px;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.sub-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.sub-tab:hover:not(.active){color:var(--text)}
+.content-section{margin-bottom:40px}
+.section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-family:'DM Mono',monospace}
+.section-heading{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--text);margin-bottom:14px}
+.body-text{color:#b0a898;line-height:1.75;font-size:14px;margin-bottom:14px}
+.callout{background:var(--surface);border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);padding:16px 20px;margin:20px 0}
+.callout p{color:#c8b878;font-size:14px;line-height:1.7;font-style:italic;font-weight:500}
+.spec-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.spec-table th{background:var(--surface2);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 14px;text-align:left;border-bottom:2px solid var(--gold)}
+.spec-table td{padding:9px 14px;border-bottom:1px solid var(--border);color:#b0a898;vertical-align:top}
+.spec-table tr:nth-child(even) td{background:#0e0e0e}
+.spec-table td:first-child{color:var(--text);font-family:'DM Mono',monospace;font-size:12px;white-space:nowrap}
+.sku-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:20px 0}
+.sku-card{background:var(--surface);border:1px solid var(--border);padding:18px;text-align:center}
+.sku-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--gold)}
+.sku-fits{font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:4px}
+.sku-detail{font-family:'DM Mono',monospace;font-size:12px;color:var(--text);margin-top:6px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin:20px 0}
+.stat-box{background:var(--surface);border:1px solid var(--border);padding:18px;text-align:center}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.step-list{counter-reset:steps;list-style:none;margin:16px 0}
+.step-list li{counter-increment:steps;display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.step-list li::before{content:counter(steps);font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);line-height:1;min-width:22px;margin-top:1px}
+.step-list li p{font-size:14px;color:#b0a898;line-height:1.7}
+.bullet-list{list-style:none;margin:12px 0}
+.bullet-list li{display:flex;gap:12px;margin-bottom:10px;font-size:14px;color:#b0a898;line-height:1.65}
+.bullet-list li::before{content:"–";color:var(--gold);flex-shrink:0}
+.pill-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.pill{font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace}
+.video-link{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--gold-dim);padding:14px 18px;margin:18px 0;cursor:pointer;text-decoration:none;transition:border-color .2s}
+.video-link:hover{border-color:var(--gold)}
+.play-icon{width:34px;height:34px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#0a0a0a;font-size:13px}
+.video-meta .video-title{font-size:13px;color:var(--text);font-weight:500}
+.video-meta .video-url{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px}
+
+/* ── SIDE HUSTLES ── */
+.hustle-header{margin-bottom:40px}
+.hustle-title{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;color:var(--text);line-height:1}
+.hustle-sub{color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+.hustle-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+.hustle-card{background:var(--surface);border:1px solid var(--border);padding:32px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.hustle-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.hustle-card:hover{background:var(--surface2);border-color:#333}
+.hustle-card:hover::before{transform:scaleX(1)}
+.hustle-card .card-arrow{color:var(--muted);font-size:20px;transition:transform .2s;float:right}
+.hustle-card:hover .card-arrow{transform:translateX(4px);color:var(--gold)}
+.hustle-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-family:'DM Mono',monospace}
+.hustle-name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:2px;line-height:1;margin-bottom:10px}
+.hustle-desc{font-size:13px;color:#a09890;line-height:1.6;margin-bottom:20px}
+.hustle-stats{display:flex;gap:16px}
+.hustle-stat{text-align:center}
+.hustle-stat .val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.hustle-stat .lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* ── HUSTLE DETAIL ── */
+.hustle-detail-header{margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid var(--border)}
+.hustle-sections .content-section{border-left:2px solid var(--border);padding-left:20px;margin-left:4px}
+
+footer{border-top:1px solid var(--border);padding:20px 40px;display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="lock-logo">Aaron</div>
+  <div class="lock-sub">Private Portfolio</div>
+  <div class="lock-form">
+    <input class="lock-input" type="password" id="pw" placeholder="· · · · · · · ·" maxlength="30"/>
+    <div class="lock-err" id="lock-err"></div>
+    <button class="lock-btn" onclick="tryUnlock()">Enter</button>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div class="logo" onclick="goHome()">Aaron</div>
+    <nav class="nav">
+      <button class="nav-tab active" id="tab-ideas" onclick="switchTab('ideas')"><i class="ti ti-bulb" aria-hidden="true"></i> Ideas</button>
+      <button class="nav-tab" id="tab-hustles" onclick="switchTab('hustles')"><i class="ti ti-briefcase" aria-hidden="true"></i> Side Hustles</button>
+    </nav>
+    <div class="header-right">
+      <a class="back-link" href="../" title="Back to portfolio"><i class="ti ti-arrow-left" aria-hidden="true"></i> Portfolio</a>
+      <div class="lock-icon" onclick="lock()" title="Lock"><i class="ti ti-lock" aria-hidden="true"></i></div>
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+  <footer>
+    <div class="footer-text">Private — Do Not Distribute</div>
+    <div class="footer-text" id="footer-date"></div>
+  </footer>
+</div>
+
+<script>
+const PASSWORD = "jagerisdog";
+let currentTab = 'ideas';
+let currentIdea = null;
+let currentIdeaTab = 'pitch';
+let currentHustle = null;
+let uploadedImages = [];
+
+// ── DATA ──
+const IDEAS = [
+  {
+    id:"getback", tag:"Automotive Aftermarket", brand:"GetBack Spares", product:"Trail Spare",
+    tagline:"The first spare tire built for lifted trucks and SUVs — diameter-matched, stock-location compatible, and engineered to get you home without destroying your drivetrain.",
+    desc:"A deflate-to-store spare tire for trucks running 35\"–37\" tires. Stores in the stock under-bed location. Inflates in 90 seconds. No drivetrain damage. Moves between cars.",
+    status:"Concept",
+    pitch:[
+      {label:"The Problem", heading:"10 Million Trucks. Zero Good Spares.", body:["Over 10 million lifted trucks and SUVs on American roads run tires larger than 33\". Every one has the same problem: the stock spare is useless. It won't clear the lifted suspension, won't fit the under-bed carrier, and on any full-time 4WD or AWD vehicle a mismatched spare actively damages the drivetrain.", "A 31\" spare on a truck running 37s spins 19.4% faster — 24 times beyond Jeep Quadra-Trac's published damage threshold. The transfer case clutch pack overheats, burns out, repair starts at $1,500. On any truck, the undersized spare triggers ABS and stability control at highway speed without warning. The stock spare is not a solution. It is a second problem."]},
+      {label:"The Product", heading:"Deflate to Store. Inflate to Use.", body:["GetBack Trail Spare stores deflated in the stock under-bed carrier. A standard 12V compressor inflates it in ~90 seconds. No special tools. Install and drive.", "Three SKUs match the most common lifted configurations. Each is diameter-matched close enough that the drivetrain isn't fighting itself, narrow enough to clear lifted calipers, engineered for 55 mph highway use."], skus:true, pills:["Load Range D / E","Max 55 mph","Max 150 miles","Pre-mounted and balanced","4 bolt patterns — 90%+ coverage"]},
+      {label:"Market", heading:"The Customer Already Exists.", body:["~4.2 million addressable US vehicles running 35\"+ tires. Ford Raptor, Ram TRX, Chevy ZR2 ship without a spare that works. Gross margin targets 60–65%."], stats:[{val:"4.2M",label:"Addressable vehicles"},{val:"60–65%",label:"Gross margin"},{val:"$65–95",label:"COGS per unit"},{val:"90%+",label:"Bolt pattern coverage"}]},
+      {label:"Reference", heading:"Proof of Concept", body:["The space-saver concept is proven on passenger cars. GetBack scales it to the load ratings and clearances of modern lifted trucks."], video:{title:"Space Saver Spare Tire — Real-World Limitations", url:"https://www.youtube.com/watch?v=YzEHxArqi2M"}}
+    ],
+    engineering:[
+      {label:"Core Mechanism", heading:"How the Inflation Works", body:["Stores deflated on the wheel. Sidewalls collapse inward, reducing diameter by 6–9 inches. Bead stays seated on the rim. Standard Schrader valve — no special tools.", "At ~20–25 psi the tire reaches full inflated diameter. Remaining pressure to 60–65 psi brings it to load-bearing spec."], steps:["Remove from under-bed carrier. Stored diameter ~25–28\" depending on SKU.", "Locate the Schrader valve — identical to any tire.", "Attach a standard inflator. Sidewalls push outward.", "At ~20–25 psi full diameter is reached. Continue to rated pressure. Total time: ~90–120 seconds.", "Confirm pressure. Install. Max 55 mph. Max 150 miles."]},
+      {label:"Dimensions", heading:"Full Specs — All Three SKUs", table:{headers:["Specification","Trail Spare 33","Trail Spare 35","Trail Spare 37"], rows:[["Fits trucks running","33\" tires","35\" tires","37\" tires"],["Overall diameter","33.0\" / 838mm","35.0\" / 889mm","37.0\" / 940mm"],["Section width","9.50\" / 241mm","10.50\" / 267mm","11.00\" / 279mm"],["Rotations per mile","611","576","545"],["Est. diameter stored","~25.8\" / 655mm","~26.9\" / 683mm","~28.0\" / 711mm"],["Load range","Load Range D","Load Range D/E","Load Range E"],["Max load rating","1,868 lb","1,868–2,149 lb","2,149 lb"],["Mounted weight","~42–45 lbs","~46–50 lbs","~50–54 lbs"],["Max speed / distance","55 mph / 150 mi","55 mph / 150 mi","55 mph / 150 mi"]]}},
+      {label:"Regulations", heading:"Required Compliance", bullets:["FMVSS No. 109 — sidewall markings, bead unseating resistance (min. 22,241N), tire strength, DOT symbol.","FMVSS No. 110 — wheel/rim must be TRA/ETRTO listed, must retain deflated tire at 60 mph.","FMVSS No. 139 — high speed testing (75 mph/30 min), endurance drum. ~$15–30K per SKU.","SAE J2530 — rotary fatigue (500,000 cycles), radial fatigue, 30° impact. ~$8–12K per bolt pattern."]},
+      {label:"Manufacturing", heading:"Production Path", body:["Tire ODMs: Interco Tire, Wanda, Sailun. Mold tooling: $20–40K per size. Min order 500–1,000/SKU. Timeline: 9–14 months.","Wheel ODMs: Accuride (OEM supplier Ford/GM/Ram), CITIC Dicastal. Custom offset tooling: $10–15K per bolt pattern."]}
+    ]
+  },
+  {
+    id:"voltrack", tag:"Smart Home / Power Tools", brand:"VoltTrack", product:"Smart Battery Charging Shelf",
+    tagline:"Walk into your garage in the morning. Glance at the shelf. Every battery is green. That's the product.",
+    desc:"A wall-mounted smart charging shelf with a dense contact grid. Set any compatible battery anywhere on it and it charges automatically. LED rings and e-ink display show exact charge per slot.",
+    status:"Concept",
+    pitch:[
+      {label:"The Problem", heading:"Dead Batteries Kill Jobs.", body:["Ryobi is the most popular consumer tool brand in America. 300+ tools on their 18V ONE+ platform. Every serious DIYer has shown up to a job with a dead battery they thought was charged.", "The current solution charges one battery at a time, tells you nothing about cell health, and requires you to remember to plug it in. There is no system. VoltTrack is the system."]},
+      {label:"The Product", heading:"Set It Down. It Charges.", body:["The shelf has a dense grid of contact points across the entire surface. Set a battery down anywhere — no precise placement. One power cable to the wall.", "Per-slot LED ring: red = charging, yellow = partial, green = full. e-ink strip shows exact percentage. The app tracks health score, cycle count, temperature, and rotation."], pills:["4-slot and 8-slot wall mount","Portable mat version","Per-slot LED rings","e-ink front display","BLE app sync"]},
+      {label:"Two Products", heading:"Cap or Full Battery.", body:["VoltTrack Battery Cap: ~3mm thin, snaps onto any existing Ryobi 18V battery. Spring-loaded gold pogo pins mate with the shelf grid. Stays on permanently. Retail: $10–15 each.", "VoltTrack Aftermarket Battery: drop-in 18V pack with pogo pins built into the bottom face. Full BMS + BLE inside. 2.0Ah, 4.0Ah, 6.0Ah. COGS ~$20–30. Retail: $49–69."]},
+      {label:"Market", heading:"300+ Tool Platform.", body:["Massive existing Ryobi customer base. Target: serious DIYers, hobbyists, small contractors. Shelf: $120–180 (4-slot). Cap: $10–15."], stats:[{val:"300+",label:"Compatible tools"},{val:"$120–180",label:"4-slot shelf"},{val:"3",label:"Tool brands planned"},{val:"60–65%",label:"Gross margin"}]}
+    ],
+    engineering:[
+      {label:"Pogo Pins", heading:"How the Contact Charging Works", body:["Three gold-plated spring-loaded pogo pins on the battery bottom face. Two carry power, one carries data — battery ID, charge %, cell health.", "Shelf electrode grid alternates positive/negative pads at ~10mm pitch. Polarity detection handles any placement orientation automatically."], table:{headers:["Parameter","Specification","Notes"], rows:[["Pin count","3 per battery","2 power + 1 data"],["Current rating","3–5A per pin","Two pins = 6–10A total"],["Gold plating","3–30 microns","Prevents oxidation"],["Contact resistance","<50 milliohms","Low resistance = low heat"],["Cycle rating","10,000+","10+ years daily use"],["Unit cost","$0.15–0.40 each","Mill-Max or Harwin"]]}},
+      {label:"Battery Cap", heading:"Cap Construction", body:["3mm thick ABS/PC snap-on cap. Nordic nRF52 BLE SoC reads the battery's fuel gauge pins and broadcasts state of charge, temperature, and cycle data."], table:{headers:["Component","Part","Cost"], rows:[["BLE SoC","Nordic nRF52811","~$1.20–2.00"],["Pogo pins (x3)","Mill-Max 0906","~$0.45–1.20"],["PCB 2-layer","~30x20mm","~$0.80–1.50"],["ABS/PC housing","Injection molded","~$0.80–1.50"],["TOTAL COGS","At 10,000 units","~$5.50–10.00"]]}},
+      {label:"Aftermarket Battery", heading:"18V Battery Specs", table:{headers:["SKU","Config","COGS","Retail"], rows:[["2.0Ah","2S2P — 4 cells","~$19–32","$49"],["4.0Ah","2S4P — 8 cells","~$25–42","$59"],["6.0Ah","2S6P — 12 cells","~$33–54","$69"]]}},
+      {label:"Hurdles", heading:"The Big Challenges", bullets:["UL 2054 (aftermarket battery): mandatory lithium cert. Physical testing. $15–30K per SKU, 3–6 months.","Contact grid real-world reliability: needs exhaustive testing with dust, moisture, crooked placement.","Ryobi fuel gauge protocol: must be reverse-engineered by an electrical engineer.","FCC Part 15: required for every BLE radio. $5–10K per device. Use pre-certified nRF52 modules.","Capital required: $235,000–460,000 to first saleable product."]}
+    ]
+  },
+  {
+    id:"sublink", tag:"Automotive Audio", brand:"SUBLINK", product:"Wireless Subwoofer System",
+    tagline:"One power wire. One ground. Zero speaker wires. Real bass in any car in under an hour.",
+    desc:"A powered subwoofer with Bluetooth built in, paired with a wireless CarPlay/Android Auto dongle. The sub receives audio from your phone, plays bass, and feeds the head unit wirelessly. No speaker wires, no head unit modifications.",
+    status:"Concept",
+    pitch:[
+      {label:"The Problem", heading:"Everyone Wants Bass. Nobody Installs It.", body:["A traditional subwoofer install means tapping speaker wires buried behind door panels, mounting an amp, running power from the battery. 3–5 hours minimum, professional installer recommended.", "New cars with integrated touchscreen head units made this worse. JBL BassPro and Kicker HIDEAWAY tried to solve it — but they still require tapping speaker wires. That's the part that stops 90% of buyers."]},
+      {label:"The Solution", heading:"SUBLINK — Two Pieces. One Box.", body:["The SUBLINK Sub receives your phone's full audio via Bluetooth, plays the low-frequency content, and forwards the signal to the SUBLINK Dongle with a precisely calibrated delay.", "The Dongle plugs into the car's USB port and presents itself as a wired CarPlay or Android Auto connection. Your phone connects wirelessly. The car sees wired. Everything is in sync."], pills:["No speaker wires","No head unit modification","Wireless CarPlay included","Works on any CarPlay or Android Auto car","Portable between cars","30–45 minute install"]},
+      {label:"The Line", heading:"Three SKUs. Same Tech in Every Box.", body:["SUBLINK 10 Sealed — 10\" driver, 300W RMS. The audiophile SKU.","SUBLINK 12 Ported — 12\" driver, 500W RMS, tuned to 32Hz. The one that makes people feel it.","SUBLINK 12S Shallow — 12\" shallow mount, 400W RMS, 7\" height for SUVs."], skus2:true},
+      {label:"Market", heading:"$9.7B Category. Nobody Solved Install.", body:["The wireless CarPlay adapter market reached $1.12B in 2024 — proving demand for plug-in car audio upgrades. SUBLINK targets anyone who wants bass but won't pay for a professional install."], stats:[{val:"$9.7B",label:"Car audio market"},{val:"$1.12B",label:"Wireless CarPlay 2024"},{val:"45–62%",label:"Gross margin target"},{val:"30 min",label:"Install time"}]}
+    ],
+    engineering:[
+      {label:"Signal Chain", heading:"How It Works — Step by Step", body:["The sub is the master. Signal flows one direction. Car speakers are deliberately delayed to match the sub."], steps:["Phone connects to SUBLINK Sub via Bluetooth automatically on startup.","Sub receives full audio. DSP applies low-pass crossover (default 80Hz). Bass plays immediately.","Sub forwards complete audio to SUBLINK Dongle via proprietary 2.4GHz link. Under 20ms latency.","Sub applies fixed buffer delay before forwarding — equal to dongle-to-speaker latency. Default 40ms.","Dongle presents delayed audio to head unit as wired CarPlay/Android Auto.","Result: factory speakers and SUBLINK Sub play in perfect sync. Error under 5ms."]},
+      {label:"Latency", heading:"The Sync Math", table:{headers:["Link","Protocol","Latency","Notes"], rows:[["Phone → Sub","Bluetooth aptX","30–40ms","Sub is reference clock"],["Sub DSP","Onboard crossover","5–10ms","Filtering + buffer"],["Sub → Dongle","Proprietary 2.4GHz","<20ms","Deterministic"],["Dongle → head unit","USB / CarPlay","~10ms","Standard"],["Total","—","~35–40ms","The calibrated buffer"],["Sync error","—","<5ms","Below perception for bass"]]}},
+      {label:"The Dongle", heading:"Wireless CarPlay Architecture", body:["Built on NXP i.MX6 UltraLite — same chipset as Carlinkit, AAWireless, Ottocast. The wireless CarPlay market hit $1.12B in 2024 on this proven technology.", "SUBLINK's modification: receives audio from the sub via 2.4GHz rather than directly from the phone, and applies the calibrated delay buffer."]},
+      {label:"Hurdles", heading:"The Real Challenges", bullets:["Apple MFi + Android Auto certification: $50–150K in development and cert costs. 3–6 months minimum. Start this first.","Sync calibration accuracy: must work across 20–30 vehicle/head unit combinations. 6–12 months validation.","FCC Part 15: sub (2.4GHz transmitter) and dongle (2.4GHz + WiFi). $8–15K per device.","Head unit compatibility: some units have quirks. Budget for ongoing firmware updates.","Capital required: $200–400K to first saleable product. Kickstarter is the right funding path."]}
+    ]
+  }
+];
+
+const HUSTLES = [
+  {
+    id:"turo",
+    tag:"Vehicle Rentals",
+    name:"Turo Fleet",
+    subtitle:"Hail Damage Cars → Turo Rentals",
+    desc:"Buy hail-damaged clean-title vehicles at a discount, repair cosmetic damage yourself, and rent them through Turo in Durango's strong tourist market.",
+    stats:[{val:"~$1,044",label:"Monthly net / RAV4"},{val:"~$1,677",label:"Monthly net / Wrangler"},{val:"780%",label:"ROI on $800 buy"}],
+    sections:[
+      {label:"The Strategy", heading:"Hail Damage = Clean Title Discount", body:["Hail storms write down the price of a car without touching the title. You buy the car at a 25–40% discount, fix what's visible — PDR, hood replacement, lights — and list it on Turo in Durango's high-demand mountain tourist market.", "Turo strictly prohibits salvage and rebuilt titles. Hail damage cars with clean titles are fully eligible. Your own QX80 is proof of concept: bought at a discount, replaced the hood for $600, looks brand new, clean title throughout."]},
+      {label:"Vehicle Targets", heading:"Best Cars for Durango Turo", table:{headers:["Vehicle","Hail Buy Target","Turo Daily Rate","Why It Works"], rows:[["Toyota RAV4 2015–18","$8,000–12,000","$72–90/day","AWD, reliable, steady demand"],["Jeep Wrangler 2015–18","$12,000–17,000","$100–145/day","Highest rate, aspirational"],["Toyota 4Runner 2015–18","$16,000–22,000","$95–130/day","Premium rate, holds value"],["Toyota Tacoma 2015–18","$13,000–18,000","$85–115/day","Truck demand, adventure crowd"],["Honda CR-V 2015–18","$7,500–11,000","$65–85/day","Reliable, lower cost entry"]]}},
+      {label:"The Numbers", heading:"Single Vehicle P&L", table:{headers:["Item","RAV4","Wrangler"], rows:[["All-in acquisition","$12,530","$16,480"],["Turo daily rate","$80/day","$115/day"],["Annual rented days","236","249"],["Host earnings (85% plan)","$16,048","$24,340"],["Annual expenses","−$3,520","−$4,220"],["NET ANNUAL PROFIT","$12,528","$20,120"],["Monthly net","$1,044","$1,677"],["ROI on acquisition","99.9%","122%"]]}},
+      {label:"Insurance", heading:"Insurance & Registration", bullets:["Personal auto insurance does NOT cover Turo rentals. You need commercial coverage during off-trip periods.", "Tint (Turo's partner): $56–89/month per vehicle. Lowest cost off-trip option.", "Period X by ABI: $97/month per vehicle, includes GPS tracking.", "Colorado registration: $380–540/year depending on vehicle MSRP. Declines annually.", "Recommendation: start on Turo 85 Plan + Tint off-trip. Switch to 90 Plan + fleet commercial policy at 3+ vehicles."]}
+    ]
+  },
+  {
+    id:"trailers",
+    tag:"Trailers",
+    name:"Trailer Business",
+    subtitle:"Buy → Fix → Flip + Rent",
+    desc:"Two complementary businesses: flipping neglected trailers for profit doing all repairs yourself, and renting trailers as a passive income stream in Durango's construction and recreation market.",
+    stats:[{val:"~$2,000",label:"Profit / 7x14 flip"},{val:"~$520",label:"Monthly net / 6x12 rental"},{val:"780%",label:"ROI on rental"}],
+    sections:[
+      {label:"The Flip", heading:"Buy Low, Fix, Sell", body:["You're targeting neglected trailers — ones that look rough cosmetically but are structurally sound. Surface rust, dead lights, bad tires, soft floor boards. A weekend of work turns a $400 trailer into a $1,200 sale.", "The key advantage: you do all the work. Your labor is free. Only real cost is parts — and trailer parts are cheap."], table:{headers:["Type","Buy Target","After Repairs","Profit"], rows:[["6x12 utility open","$300–700","$1,200–1,800","$500–900"],["7x14 enclosed cargo","$1,200–2,500","$3,500–5,500","$1,500–2,500"],["16ft flatbed","$800–1,800","$2,500–4,000","$1,000–1,800"],["Dump trailer","$2,000–4,500","$6,000–9,000","$2,000–3,500"],["2-horse trailer","$1,500–4,000","$5,000–9,000","$2,000–4,000"]]}},
+      {label:"Inspection", heading:"What to Check Before Buying", bullets:["Frame: inspect every weld on rails, crossmembers, and tongue. Surface rust is fine. Through-rust on structural members = walk away. Bent tongue = prior hard hit.","Axles: spin each wheel by hand. Any grinding = bad bearings. $20–40 parts + 30 min to repack. Check for bent axles by sighting across tire tops.","Tires: cracking sidewalls = dry rot even if tread looks okay. Budget $80–140 per tire on anything over 5 years old.","Lights: plug in and test every light. Dead lights are almost always just a corroded connector — $15 fix. Rewire if needed: $60–120 parts.","Floor: probe soft spots with a screwdriver. Soft = rot. One board = easy fix ($150–200 lumber). Whole floor = factor it in before buying.","Title: Colorado titles ALL trailers. Never buy without a clean title. Check VIN on title matches VIN plate on tongue."]},
+      {label:"The Rental", heading:"Rental Rates & Returns", table:{headers:["Type","Daily Rate","Monthly Net (10 days)","Annual Net"], rows:[["6x12 utility","$45–65/day","~$520","~$6,240"],["7x14 enclosed","$65–90/day","~$565","~$6,780"],["16ft flatbed","$75–110/day","~$800","~$9,600"],["Dump trailer","$150–225/day","~$1,650","~$19,800"]]}, bullets:["List on Neighbors Trailer (peer-to-peer platform) and Facebook Marketplace local groups.","Colorado HB25-1121 (2025): permanent trailer registration for one-time $55.82 — no more annual renewals.","Annual registration: $30–150/year depending on weight.","Commercial inland marine insurance: $200–500/year per trailer.","GPS tracker inside the frame: $25–50/year subscription. Worth it on anything over $1,500."]}
+    ]
+  }
+];
+
+// ── AUTH ──
+function tryUnlock() {
+  const v = document.getElementById('pw').value;
+  if (v === PASSWORD) {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    document.getElementById('footer-date').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    renderTab('ideas');
+  } else {
+    document.getElementById('lock-err').textContent = 'Incorrect password';
+    document.getElementById('pw').value = '';
+  }
+}
+document.getElementById('pw').addEventListener('keydown', e => { if(e.key==='Enter') tryUnlock(); });
+function lock() { location.reload(); }
+
+// ── NAVIGATION ──
+function switchTab(tab) {
+  currentTab = tab;
+  currentIdea = null;
+  currentHustle = null;
+  ['ideas','hustles'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t === tab);
+  });
+  renderTab(tab);
+}
+function goHome() { switchTab('ideas'); }
+
+function renderTab(tab) {
+  if (tab === 'ideas') renderIdeasHome();
+  else if (tab === 'hustles') renderHustlesHome();
+}
+
+// ── IDEAS ──
+function renderIdeasHome() {
+  document.getElementById('main').innerHTML = `
+    <div class="page">
+      <div class="home-header">
+        <div class="home-title">Idea Portfolio</div>
+        <div class="home-sub">Private — ${IDEAS.length} concepts in development</div>
+      </div>
+      <div class="cards-grid">
+        ${IDEAS.map((idea,i) => `
+          <div class="idea-card" onclick="openIdea('${idea.id}')">
+            <div class="card-num">${String(i+1).padStart(2,'0')}</div>
+            <div class="card-tag">${idea.tag}</div>
+            <div class="card-title">${idea.brand}</div>
+            <div class="card-product">${idea.product}</div>
+            <div class="card-desc">${idea.desc}</div>
+            <div class="card-footer">
+              <div class="card-status">${idea.status}</div>
+              <div class="card-arrow">→</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function openIdea(id) {
+  currentIdea = IDEAS.find(i => i.id === id);
+  currentIdeaTab = 'pitch';
+  renderIdeaDetail();
+}
+
+function setIdeaTab(t) {
+  currentIdeaTab = t;
+  renderIdeaDetail();
+}
+
+function renderSection(s) {
+  let html = `<div class="content-section"><div class="section-label">${s.label}</div><div class="section-heading">${s.heading}</div>`;
+  if(s.body) s.body.forEach(p => { html += `<p class="body-text">${p}</p>`; });
+  if(s.bullets) { html += `<ul class="bullet-list">`; s.bullets.forEach(b => { html += `<li>${b}</li>`; }); html += `</ul>`; }
+  if(s.steps) { html += `<ol class="step-list">`; s.steps.forEach(st => { html += `<li><p>${st}</p></li>`; }); html += `</ol>`; }
+  if(s.callout) html += `<div class="callout"><p>${s.callout}</p></div>`;
+  if(s.pills) html += `<div class="pill-row">${s.pills.map(p=>`<div class="pill">${p}</div>`).join('')}</div>`;
+  if(s.stats) html += `<div class="stat-row">${s.stats.map(st=>`<div class="stat-box"><div class="stat-val">${st.val}</div><div class="stat-label">${st.label}</div></div>`).join('')}</div>`;
+  if(s.skus) html += `<div class="sku-grid"><div class="sku-card"><div class="sku-name">Trail Spare 33</div><div class="sku-fits">Fits 33" trucks</div><div class="sku-detail">~$65–75 COGS</div></div><div class="sku-card"><div class="sku-name">Trail Spare 35</div><div class="sku-fits">Fits 35" trucks</div><div class="sku-detail">~$70–80 COGS</div></div><div class="sku-card"><div class="sku-name">Trail Spare 37</div><div class="sku-fits">Fits 37" trucks</div><div class="sku-detail">~$80–95 COGS</div></div></div>`;
+  if(s.skus2) html += `<div class="sku-grid"><div class="sku-card"><div class="sku-name">SUBLINK 10</div><div class="sku-fits">Sealed — 300W RMS</div><div class="sku-detail">Tight accurate bass</div></div><div class="sku-card"><div class="sku-name">SUBLINK 12</div><div class="sku-fits">Ported — 500W RMS</div><div class="sku-detail">Makes people feel it</div></div><div class="sku-card"><div class="sku-name">SUBLINK 12S</div><div class="sku-fits">Shallow — 400W RMS</div><div class="sku-detail">7" height for SUVs</div></div></div>`;
+  if(s.video) html += `<a class="video-link" href="${s.video.url}" target="_blank"><div class="play-icon">▶</div><div class="video-meta"><div class="video-title">${s.video.title}</div><div class="video-url">${s.video.url.replace('https://','')}</div></div></a>`;
+  if(s.table) html += `<table class="spec-table"><thead><tr>${s.table.headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${s.table.rows.map(row=>`<tr>${row.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  html += `</div>`;
+  return html;
+}
+
+function renderIdeaDetail() {
+  const idea = currentIdea;
+  const sections = currentIdeaTab === 'pitch' ? idea.pitch : idea.engineering;
+  document.getElementById('main').innerHTML = `
+    <div class="page">
+      <button class="back-btn" onclick="renderIdeasHome()">← All Ideas</button>
+      <div class="detail-header">
+        <div class="detail-tag">${idea.tag}</div>
+        <div class="detail-title">${idea.brand}</div>
+        <div class="detail-product">${idea.product}</div>
+        <div class="detail-tagline">${idea.tagline}</div>
+      </div>
+      <div class="sub-tabs">
+        <button class="sub-tab ${currentIdeaTab==='pitch'?'active':''}" onclick="setIdeaTab('pitch')">Pitch</button>
+        <button class="sub-tab ${currentIdeaTab==='engineering'?'active':''}" onclick="setIdeaTab('engineering')">Engineering Detail</button>
+      </div>
+      ${sections.map(s => renderSection(s)).join('')}
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+// ── SIDE HUSTLES ──
+function renderHustlesHome() {
+  document.getElementById('main').innerHTML = `
+    <div class="page">
+      <div class="hustle-header">
+        <div class="hustle-title">Side Hustles</div>
+        <div class="hustle-sub">Durango, Colorado — Real businesses with real numbers</div>
+      </div>
+      <div class="hustle-cards">
+        ${HUSTLES.map((h,i) => `
+          <div class="hustle-card" onclick="openHustle('${h.id}')">
+            <div class="card-num">${String(i+1).padStart(2,'0')}</div>
+            <div class="hustle-tag">${h.tag}</div>
+            <div class="hustle-name">${h.name}</div>
+            <div class="card-product" style="margin-bottom:14px">${h.subtitle}</div>
+            <div class="hustle-desc">${h.desc}</div>
+            <div class="hustle-stats">
+              ${h.stats.map(s => `<div class="hustle-stat"><div class="val">${s.val}</div><div class="lbl">${s.label}</div></div>`).join('')}
+            </div>
+            <div style="text-align:right;margin-top:16px"><span class="card-arrow">→</span></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function openHustle(id) {
+  currentHustle = HUSTLES.find(h => h.id === id);
+  renderHustleDetail();
+}
+
+function renderHustleDetail() {
+  const h = currentHustle;
+  document.getElementById('main').innerHTML = `
+    <div class="page hustle-sections">
+      <button class="back-btn" onclick="renderHustlesHome()">← Side Hustles</button>
+      <div class="hustle-detail-header detail-header">
+        <div class="detail-tag">${h.tag}</div>
+        <div class="detail-title">${h.name}</div>
+        <div class="detail-product">${h.subtitle}</div>
+      </div>
+      ${h.sections.map(s => renderSection(s)).join('')}
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+
+</script>
+</body>
+</html>
